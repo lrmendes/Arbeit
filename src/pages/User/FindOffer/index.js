@@ -14,6 +14,7 @@ import { Feather } from "@expo/vector-icons";
 import AppBar from "../../../components/AppBar";
 import Avatar from "../../../components/Avatar";
 import OfferCard from "../../../components/OfferCard";
+import Warning from "../../../components/Warning";
 
 import firebase, { db } from "../../../services/firebase.js";
 import { CommonActions } from "@react-navigation/native";
@@ -169,20 +170,27 @@ export default function FindOffer({ navigation }) {
 			/>
 
 			{activeIndex == myOffers.length ? null : (
-				<SkillsTab skills={myOffers[activeIndex].skills} />
+				<SkillsTab skills={myOffers[activeIndex]?.skills} />
 			)}
 
-			{activeIndex == myOffers.length ? (
-				<Text>There are no current jobs now!</Text>
-			) : (
-				<OfferCard
-					description={myOffers[activeIndex].description}
-					title={myOffers[activeIndex].jobTitle}
-					business={myOffers[activeIndex].businessName}
-					place="Bragança, Portugal"
-					value={myOffers[activeIndex].payment}
-				/>
-			)}
+			<View style={classes.cardWrapper}>
+				{activeIndex == myOffers.length ? (
+					<Warning
+						title="No jobs for now!"
+						message="There are no jobs avaliable currently"
+					/>
+				) : (
+					<OfferCard
+						onSwipeLeft={doDeny}
+						onSwipeRight={doApprove}
+						description={myOffers[activeIndex].description}
+						title={myOffers[activeIndex].jobTitle}
+						business={myOffers[activeIndex].businessName}
+						place="Bragança, Portugal"
+						value={myOffers[activeIndex].payment}
+					/>
+				)}
+			</View>
 
 			{activeIndex == myOffers.length ? null : (
 				<View style={classes.actions}>
@@ -232,14 +240,6 @@ const classes = StyleSheet.create({
 		color: "#ffffff",
 		textTransform: "capitalize",
 	},
-	buttonIcon2: {
-		backgroundColor: "#333",
-		flexDirection: "row",
-		borderRadius: 15,
-		padding: 10,
-		alignContent: "center",
-		justifyContent: "center",
-	},
 	wrapper: {
 		flex: 1,
 		padding: 24,
@@ -247,6 +247,13 @@ const classes = StyleSheet.create({
 		justifyContent: "flex-start",
 		alignItems: "center",
 		backgroundColor: "#EBEBEB",
+	},
+	cardWrapper: {
+		flex: 1,
+		width: "100%",
+		height: "100%",
+		alignContent: "center",
+		justifyContent: "center",
 	},
 	actions: {
 		padding: 24,

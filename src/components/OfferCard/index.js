@@ -1,7 +1,12 @@
-import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import React, { createRef } from "react";
+import { Animated, Dimensions, View, Text, StyleSheet } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
+import Swipeable from "react-native-gesture-handler/Swipeable";
+import { LinearGradient } from "expo-linear-gradient";
+
+const SCREEN_WIDTH = Dimensions.get("screen").width;
+const IMAGE_WIDTH = SCREEN_WIDTH * 0.8;
 
 export default function OfferCard({
 	description = "",
@@ -9,40 +14,146 @@ export default function OfferCard({
 	business = "",
 	place = "",
 	value = "",
+	onSwipeLeft = () => {},
+	onSwipeRight = () => {},
 }) {
+	const swipeableRef = createRef();
+
+	const renderRightActions = (progress, dragX) => {
+		const scale = dragX.interpolate({
+			inputRange: [-SCREEN_WIDTH, 0],
+			outputRange: [1, 0],
+		});
+		const radius = dragX.interpolate({
+			inputRange: [-SCREEN_WIDTH, 0],
+			outputRange: [400, 40],
+		});
+		const rotate = dragX.interpolate({
+			inputRange: [-SCREEN_WIDTH, 0],
+			outputRange: [0, 1],
+		});
+
+		return (
+			<Animated.View
+				style={{
+					transform: [{ scaleX: scale, scaleY: scale }],
+					width: "100%",
+					height: "100%",
+					margin: 0,
+					alignSelf: "center",
+					justifyContent: "center",
+					alignItems: "center",
+					justifySelf: "center",
+				}}
+			>
+				<Animated.View
+					style={{
+						transform: [{ rotate: rotate }],
+						width: 400,
+						height: 400,
+						borderRadius: radius,
+						alignItems: "center",
+						backgroundColor: "#32FFE3",
+						justifyContent: "center",
+					}}
+				>
+					<Feather name="check" size={150} color="#FFF" />
+				</Animated.View>
+			</Animated.View>
+		);
+	};
+
+	const renderLeftActions = (progress, dragX) => {
+		const scale = dragX.interpolate({
+			inputRange: [0, SCREEN_WIDTH],
+			outputRange: [0, 1],
+		});
+		const radius = dragX.interpolate({
+			inputRange: [0, SCREEN_WIDTH],
+			outputRange: [40, 400],
+		});
+		const rotate = dragX.interpolate({
+			inputRange: [0, SCREEN_WIDTH],
+			outputRange: [1, -0.1],
+		});
+
+		return (
+			<Animated.View
+				style={{
+					transform: [{ scaleX: scale, scaleY: scale }],
+					width: "100%",
+					height: "100%",
+					margin: 0,
+					alignSelf: "center",
+					justifyContent: "center",
+					alignItems: "center",
+					justifySelf: "center",
+				}}
+			>
+				<Animated.View
+					style={{
+						transform: [{ rotate }],
+						width: 400,
+						height: 400,
+						borderRadius: radius,
+						alignItems: "center",
+						backgroundColor: "#FE2845",
+						justifyContent: "center",
+					}}
+				>
+					<Feather name="x" size={150} color="#FFF" />
+				</Animated.View>
+			</Animated.View>
+		);
+	};
+
 	return (
-		<View style={classes.wrapper}>
-			<Text style={classes.description}>{description}</Text>
-			<View style={classes.footerWrapper}>
-				<Text style={classes.title}>{title}</Text>
-				<View style={classes.detailsWrapper}>
-					<View>
-						<Text style={classes.business}>{business}</Text>
-						<Text style={classes.place}>
-							<Feather name="map-pin" size={14} /> {place}
-						</Text>
-					</View>
-					{value ? (
+		<Swipeable
+			ref={swipeableRef}
+			friction={2}
+			overshootFriction={10}
+			renderRightActions={renderRightActions}
+			renderLeftActions={renderLeftActions}
+			onSwipeableRightOpen={onSwipeRight}
+			onSwipeableLeftOpen={onSwipeLeft}
+			containerStyle={{
+				flex: 1,
+				flexDirection: "column",
+			}}
+		>
+			<View style={classes.wrapper}>
+				<Text style={classes.description}>{description}</Text>
+				<View style={classes.footerWrapper}>
+					<Text style={classes.title}>{title}</Text>
+					<View style={classes.detailsWrapper}>
 						<View>
-							<Text style={classes.value}>
-								<FontAwesome name="euro" size={20} color="#fff" /> {value}
+							<Text style={classes.business}>{business}</Text>
+							<Text style={classes.place}>
+								<Feather name="map-pin" size={14} /> {place}
 							</Text>
 						</View>
-					) : (
-						<View>
-							<Text style={classes.value}>Negotiable</Text>
-						</View>
-					)}
+						{value ? (
+							<View>
+								<Text style={classes.value}>
+									<FontAwesome name="euro" size={20} color="#fff" /> {value}
+								</Text>
+							</View>
+						) : (
+							<View>
+								<Text style={classes.value}>Negotiable</Text>
+							</View>
+						)}
+					</View>
 				</View>
 			</View>
-		</View>
+		</Swipeable>
 	);
 }
 
 const classes = StyleSheet.create({
 	wrapper: {
-		flex: 1,
 		width: "100%",
+		height: "100%",
 		flexDirection: "column",
 		backgroundColor: "#FFFFFF",
 		borderRadius: 20,
