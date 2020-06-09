@@ -1,16 +1,16 @@
-import React from 'react';
+import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { Feather } from "@expo/vector-icons";
-import { FontAwesome } from '@expo/vector-icons';
+import { FontAwesome } from "@expo/vector-icons";
 
 export default function OfferCard({
-  description = "",
-  title = "",
-  business = "",
-  place = "",
-  value = ""
+	description = "",
+	title = "",
+	business = "",
+	place = "",
+	value = "",
 }) {
-  return (
+	return (
 		<View style={classes.wrapper}>
 			<Text style={classes.description}>{description}</Text>
 			<View style={classes.footerWrapper}>
@@ -22,13 +22,17 @@ export default function OfferCard({
 							<Feather name="map-pin" size={14} /> {place}
 						</Text>
 					</View>
-					{ value && (
-            <View>
-              <Text style={classes.value}>
+					{value ? (
+						<View>
+							<Text style={classes.value}>
 								<FontAwesome name="euro" size={20} color="#fff" /> {value}
-              </Text>
-            </View>
-          )}
+							</Text>
+						</View>
+					) : (
+						<View>
+							<Text style={classes.value}>Negotiable</Text>
+						</View>
+					)}
 				</View>
 			</View>
 		</View>

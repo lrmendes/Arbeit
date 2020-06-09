@@ -1,29 +1,23 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Constants from "expo-constants";
 import {
 	View,
-	TextInput,
 	StyleSheet,
 	Text,
 	ScrollView,
 	TouchableOpacity,
 	Alert,
 } from "react-native";
-import { useNavigation, useRoute } from "@react-navigation/native";
-import { RectButton } from "react-native-gesture-handler";
 import HideWithKeyboard from "react-native-hide-with-keyboard";
 import firebase, { db } from "../../../services/firebase";
 import { Feather } from "@expo/vector-icons";
 
 import AppBar from "../../../components/AppBar";
-import Avatar from "../../../components/Avatar";
 import Input from "../../../components/Input";
 import IconButton from "../../../components/Buttons/IconButton";
-import { CommonActions } from '@react-navigation/native';
+import { CommonActions } from "@react-navigation/native";
 
-export default function CreateOffer({navigation}) {
-	const [isLoading, setIsLoading] = useState(false);
-
+export default function CreateOffer({ navigation }) {
 	const [form, setForm] = useState({
 		jobTitle: "",
 		payment: "",
@@ -33,15 +27,8 @@ export default function CreateOffer({navigation}) {
 	});
 
 	const createButtonAlert = (title, msg) => {
-		Alert.alert(
-			 title,
-			 msg,
-			 [
-					{ text: "OK" }
-			 ],
-			 { cancelable: false }
-		);
- }
+		Alert.alert(title, msg, [{ text: "OK" }], { cancelable: false });
+	};
 
 	const onNavigateBack = () => {
 		navigation.goBack();
@@ -56,39 +43,43 @@ export default function CreateOffer({navigation}) {
 
 	const createNewOffer = () => {
 		if (form.jobTitle == "") {
-			setIsLoading(false);
 			return createButtonAlert("ERROR", "Field 'Job title' cannot be empty!");
 		}
 
 		if (form.skills == "") {
-			setIsLoading(false);
-			return createButtonAlert(
-				"ERROR",
-				"Field 'Skills' cannot be empty!"
-			);
+			return createButtonAlert("ERROR", "Field 'Skills' cannot be empty!");
 		}
 		if (form.description == "") {
-			setIsLoading(false);
-			return createButtonAlert(
-				"ERROR",
-				"Field 'Description' cannot be empty!"
-			);
+			return createButtonAlert("ERROR", "Field 'Description' cannot be empty!");
 		}
 
-		db.collection('Offers').add(
-			{ email: firebase.auth().currentUser.email , businessName: firebase.auth().currentUser.displayName, jobTitle: form.jobTitle , location: form.location, skills: form.skills, description: form.description, payment: form.payment, refusedUsers: [], acceptedUsers: [] }
-		).then(() => {
+		db.collection("Offers")
+			.add({
+				email: firebase.auth().currentUser.email,
+				businessName: firebase.auth().currentUser.displayName,
+				jobTitle: form.jobTitle,
+				location: form.location,
+				skills: form.skills,
+				description: form.description,
+				payment: form.payment,
+				refusedUsers: [],
+				acceptedUsers: [],
+			})
+			.then(() => {
 				createButtonAlert("Success", "Offer created!");
 				return navigation.dispatch(
 					CommonActions.reset({
-							index: 0,
-							routes: [
-							{ name: 'ListOffer' },
-					],}));
-		}).catch(erro => {
-				return createButtonAlert("Error", "Error registering offer in the database.");
-		});
-
+						index: 0,
+						routes: [{ name: "ListOffer" }],
+					})
+				);
+			})
+			.catch((erro) => {
+				return createButtonAlert(
+					"Error",
+					"Error registering offer in the database."
+				);
+			});
 	};
 
 	return (
@@ -96,20 +87,21 @@ export default function CreateOffer({navigation}) {
 			{/* AppBar */}
 			<View style={styles.appBar}>
 				<AppBar
+					color="#8C00CA"
 					renderLeft={
 						<TouchableOpacity onPress={onNavigateBack}>
 							<Feather name="chevron-left" size={24} color="black" />
 						</TouchableOpacity>
 					}
-					renderRight={<Avatar>A</Avatar>}
 				/>
 			</View>
 			<Text style={styles.title}>Register a job offer</Text>
 
 			<ScrollView vertical showsVerticalScrollIndicator={false}>
-				<Input label="Job title"
-				placeholder="Seller"
-				onChangeText={(e) => onInput("jobTitle", e)}
+				<Input
+					label="Job title"
+					placeholder="Seller"
+					onChangeText={(e) => onInput("jobTitle", e)}
 				/>
 				<Input
 					label="Payment"
