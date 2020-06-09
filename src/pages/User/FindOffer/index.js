@@ -267,7 +267,7 @@ const classes = StyleSheet.create({
 	buttonApprove: {
 		width: 84,
 		height: 84,
-		backgroundColor: "#00b556",
+		backgroundColor: "#32FFE3",
 		borderRadius: 84,
 		alignItems: "center",
 		justifyContent: "center",
