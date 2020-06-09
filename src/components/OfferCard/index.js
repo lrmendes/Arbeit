@@ -1,9 +1,8 @@
-import React, { createRef } from "react";
+import React, { createRef, useEffect } from "react";
 import { Animated, Dimensions, View, Text, StyleSheet } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
 import Swipeable from "react-native-gesture-handler/Swipeable";
-import { LinearGradient } from "expo-linear-gradient";
 
 const SCREEN_WIDTH = Dimensions.get("screen").width;
 const IMAGE_WIDTH = SCREEN_WIDTH * 0.8;
@@ -18,6 +17,12 @@ export default function OfferCard({
 	onSwipeRight = () => {},
 }) {
 	const swipeableRef = createRef();
+
+	useEffect(() => {
+		if (swipeableRef.current !== undefined) {
+			swipeableRef.current.close();
+		}
+	}, [description, title, business, place, value]);
 
 	const renderRightActions = (progress, dragX) => {
 		const scale = dragX.interpolate({
@@ -110,7 +115,7 @@ export default function OfferCard({
 	return (
 		<Swipeable
 			ref={swipeableRef}
-			friction={2}
+			friction={1}
 			overshootFriction={10}
 			renderRightActions={renderRightActions}
 			renderLeftActions={renderLeftActions}

@@ -11,7 +11,7 @@ export default function LoginTab({ isEnterprise, onChange }) {
 				]}
 				onPress={() => onChange(false)}
 			>
-				<Text style={classes.pillText}>Looking for job?</Text>
+				<Text style={classes.pillText}>Looking for jobs?</Text>
 			</TouchableOpacity>
 			<TouchableOpacity
 				style={[
