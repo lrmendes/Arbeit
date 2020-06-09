@@ -77,19 +77,20 @@ export default function FindOffer({ navigation }) {
 	}
 
 	const doApprove = () => {
-		let accepted = [];
-		let data = myOffers[activeIndex];
+		/*let accepted = [];
+
 		if (!data.acceptedUsers || data.acceptedUsers == undefined || data.acceptedUsers.length == undefined || data.acceptedUsers.length == 0) {
 			//console.log("Vazio");
 		} else {
 			accepted = data.acceptedUsers;
 		}
 		accepted.push(user);
-
+		*/
+		let data = myOffers[activeIndex];
 		setIsLoading(true);
 		db.collection('Offers').doc(data.id)
 		.update({
-			acceptedUsers: accepted
+			acceptedUsers: firebase.firestore.FieldValue.arrayUnion(user)
 		})
 		.then(() => {
 			setIsLoading(false);
@@ -101,18 +102,19 @@ export default function FindOffer({ navigation }) {
 	};
 
 	const doDeny = () => {
-		let deny = [];
+		/*let deny = [];
 		let data = myOffers[activeIndex];
 		if (!data.refusedUsers || data.refusedUsers == undefined || data.refusedUsers.length == undefined || data.refusedUsers.length == 0) {
 		} else {
 			deny = data.refusedUsers;
 		}
 		deny.push(user);
-
+		*/
+		let data = myOffers[activeIndex];
 		setIsLoading(true);
 		db.collection('Offers').doc(data.id)
 		.update({
-			refusedUsers: deny
+			refusedUsers: firebase.firestore.FieldValue.arrayUnion(user)
 		})
 		.then(() => {
 			setIsLoading(false);

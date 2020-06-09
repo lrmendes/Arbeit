@@ -60,11 +60,7 @@ export default function RegisterUser({ navigation, route }) {
 						);
 					})}
 				</ScrollView>
-				<HideWithKeyboard style={styles.footer}>
-					<TouchableOpacity onPress={() => closeOffer()} style={styles.button}>
-						<Text style={styles.buttonText}>Close Offer</Text>
-					</TouchableOpacity>
-				</HideWithKeyboard>
+
 			</View>
 		</>
 	);

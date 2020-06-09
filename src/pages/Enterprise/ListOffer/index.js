@@ -13,6 +13,7 @@ export default function ListOffer({navigation}) {
 
 	const [myOffers,setMyOffers] = useState([]);
 	const [runOnce,setRunOnce] = useState(true);
+	const [reload,setReload] = useState(false);
 
 	useEffect(() => {
 		//if(runOnce) {
@@ -25,7 +26,7 @@ export default function ListOffer({navigation}) {
 				setMyOffers(offers);
 			});
 		//}
-	},[]);
+	},[reload]);
 
 	const logoutAlert = (title,msg) =>
     Alert.alert(
@@ -62,7 +63,13 @@ export default function ListOffer({navigation}) {
 							<Feather name="log-out" size={24} color="black" />
 						</TouchableOpacity>
 					}
-					renderRight={<Avatar>A</Avatar>}
+					renderRight={
+						<TouchableOpacity
+							onPress={() => setReload(!reload)}
+						>
+							<Feather name="refresh-cw" size={24} color="black" />
+						</TouchableOpacity>
+					}
 				/>
       </View>
 
@@ -78,7 +85,6 @@ export default function ListOffer({navigation}) {
 				)
 			})}
 			{myOffers.length == 0 ? <Text style={classes.cardTitle}>You do not have offers yet!</Text> : null}
-
 
       {/* Actions */}
       <View style={classes.actions}>
