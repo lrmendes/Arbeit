@@ -83,7 +83,7 @@ export default function RegisterUser() {
 								db.collection('Users').add(
                      { email: form.email, fullName: form.fullName, phone: form.phone, location: form.location, skills: form.skills }
                   ).then(() => {
-                     createButtonAlert("Sucess", "Registration Sucessful!!");
+                     createButtonAlert("Success", "Registration Successful!!");
                      return navigation.navigate('Login');
                   }).catch(erro => {
                      setIsLoading(false);
@@ -91,7 +91,7 @@ export default function RegisterUser() {
                   });
                });
             } else {
-               alert("Registration Sucessful!");
+               alert("Registration Successful!");
                return navigation.navigate('Login');
             }
          })
@@ -161,6 +161,9 @@ export default function RegisterUser() {
 						placeholder="Ex: Seller, Manufacturer ..."
 						onChangeText={(e) => onInput("skills", e)}
 					/>
+					<Text style={styles.observation}>
+					* Separate skills using comma (,).
+					</Text>
 				</ScrollView>
 				<HideWithKeyboard style={styles.footer}>
 					<IconButton
@@ -184,6 +187,11 @@ const styles = StyleSheet.create({
 		paddingLeft: 32,
 		paddingBottom: 8,
 		paddingTop: 24 + Constants.statusBarHeight,
+	},
+	observation: {
+		fontSize: 12,
+		textAlign: "right",
+		color: "#bd2843",
 	},
 	title: {
 		fontWeight: "bold",

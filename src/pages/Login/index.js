@@ -187,7 +187,7 @@ export default function Login({ navigation }) {
 					style={classes.registerButton}
 					onPress={() =>
 						navigation.navigate(
-							isEnterprise ? "CreateOffer" : "RegisterUser"
+							isEnterprise ? "RegisterEnterprise" : "RegisterUser"
 						)
 					}
 				>
