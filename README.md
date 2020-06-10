@@ -15,7 +15,7 @@ Castletthon Hackaton Winner (10 jun. 2020)
   - Firebase
   
  ## Authors
- Giuseppe Setem
- Lucas Mendes
- Milton Boos
+ Giuseppe Setem<br/>
+ Lucas Mendes<br/>
+ Milton Boos<br/>
  Tarcisio Prates
